@@ -1,12 +1,12 @@
-class jboss {
+class jboss inherits jboss::params {
   include '::jboss::config'
 
-  file { '/root/jboss':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'jboss',
-    mode   => '0750',
-  }
+  #file { '/root/jboss':
+  #  ensure => directory,
+  #  owner  => 'root',
+  #  group  => 'jboss',
+  #  mode   => '0750',
+  #}
 
   # Application Server
   $as = hiera_hash('jboss::as', undef)
@@ -15,8 +15,8 @@ class jboss {
   }
 
   # HornetQ
-  $hornetq = hiera_hash('jboss::hornetq', undef)
-  if $hornetq {
-    create_resources('jboss::hornetq', $hornetq)
-  }
+  #$hornetq = hiera_hash('jboss::hornetq', undef)
+  #if $hornetq {
+  #  create_resources('jboss::hornetq', $hornetq)
+  #}
 }

@@ -11,24 +11,25 @@ define jboss::as (
   $ojdbc6       = false,
   $coherence    = false,
   $sunjdk       = false,
+  $source       = undef,
 ) {
   $user        = $title
   $product     = 'jboss-as'
   $product_dir = "${basedir}/product/${product}-${version}"
 
-  include runit
-  if ! defined(File["${basedir}/runit/${user}"]) {
-    runit::user { $user:
-      basedir => $basedir,
-      group   => $group,
-    }
-  }
+  #include runit
+  #if ! defined(File["${basedir}/runit/${user}"]) {
+  #  runit::user { $user:
+  #    basedir => $basedir,
+  #    group   => $group,
+  #  }
+  #}
 
   jboss::install { "${user}-${product}":
-    version     => "${product}-${version}",
-    user        => $user,
-    group       => $group,
-    basedir     => $basedir,
+    version => "${product}-${version}",
+    user    => $user,
+    group   => $group,
+    basedir => $basedir,
   }
 
   if $ojdbc6 {
@@ -55,24 +56,24 @@ define jboss::as (
     }
   }
 
-  $file_paths = prefix($extra_jars, "${product_dir}/")
-  jboss::extra_jars { $file_paths:
-    product_dir => $product_dir,
-    destination => "${product_dir}/standalone/lib/ext",
-    user        => $user,
-    require     => File[$product_dir],
-  }
+  #$file_paths = prefix($extra_jars, "${product_dir}/")
+  #jboss::extra_jars { $file_paths:
+  #  product_dir => $product_dir,
+  #  destination => "${product_dir}/standalone/lib/ext",
+  #  user        => $user,
+  #  require     => File[$product_dir],
+  #}
 
-  jboss::service{ "${user}-${product}":
-    basedir      => $basedir,
-    logdir       => $logdir,
-    product      => $product,
-    user         => $user,
-    group        => $group,
-    version      => $version,
-    java_home    => $java_home,
-    java_opts    => $java_opts,
-    bind_address => $bind_address,
-    config_file  => $config_file,
-  }
+  #jboss::service{ "${user}-${product}":
+  #  basedir      => $basedir,
+  #  logdir       => $logdir,
+  #  product      => $product,
+  #  user         => $user,
+  #  group        => $group,
+  #  version      => $version,
+  #  java_home    => $java_home,
+  #  java_opts    => $java_opts,
+  #  bind_address => $bind_address,
+  #  config_file  => $config_file,
+  #}
 }
